@@ -42,7 +42,12 @@
       <% if @issue.check_in_time.present? && Setting.plugin_redmine_services['servant_fields'].include?(value.custom_field_id.to_s) %>
         <div class="form-group">
             <% if i == 0 %>
-                <p style="text-align: right;padding: 0;margin: 0;"><span><b>Need follow up: <font color="red">NO</font></b></span></p>
+                <p style="text-align: right;padding: 0;margin: 0;"><span><b>Need follow up: <font color="red">
+                    <% 
+                        sts = IssueStatus.where(id: @issue.tracker.issue_status_ids)
+                    %>
+                    <%= select_tag("issue[status_id]", options_from_collection_for_select(sts, "id", "name",@issue.status_id)) %>
+                </font></b></span></p>
             <% end %>
             <%= custom_field_tag_with_label :issue, value, {:required => true, class: 'form-control item'} %>
             <% if i == 0 %>

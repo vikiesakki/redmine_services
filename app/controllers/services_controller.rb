@@ -38,23 +38,27 @@ class ServicesController < ApplicationController
 	end
 
 	def upload
-	    # Make sure that API users get used to set this content type
-	    # as it won't trigger Rails' automatic parsing of the request body for parameters
-	    unless request.media_type == 'application/octet-stream'
-	      head :not_acceptable
-	      return
-	    end
+    # Make sure that API users get used to set this content type
+    # as it won't trigger Rails' automatic parsing of the request body for parameters
+    unless request.media_type == 'application/octet-stream'
+      head :not_acceptable
+      return
+    end
 
-	    @attachment = Attachment.new(:file => raw_request_body)
-	    @attachment.author = User.current
-	    @attachment.filename = params[:filename].presence || Redmine::Utils.random_hex(16)
-	    @attachment.content_type = params[:content_type].presence
-	    saved = @attachment.save
+    @attachment = Attachment.new(:file => raw_request_body)
+    @attachment.author = User.current
+    @attachment.filename = params[:filename].presence || Redmine::Utils.random_hex(16)
+    @attachment.content_type = params[:content_type].presence
+    saved = @attachment.save
 
-	    respond_to do |format|
-	      format.js
-	    end
-  	end
+    respond_to do |format|
+      format.js
+    end
+	end
+
+  def report_pdf
+  	@issue = Issue.find params[:id]
+  end
 
 	def form_submit
 		@issue = Issue.find_by_id params[:issue_id]
@@ -64,7 +68,8 @@ class ServicesController < ApplicationController
 			save_issue_custom_field_values
 			save_issue_attachments
 			# attachments = params[:attachments] || params.dig(:issue, :uploads)
-		    @issue.update(check_out_time: Time.now,status_id: 5)
+				update_status = params[:issue][:status_id] || 5
+		    @issue.update(check_out_time: Time.now,status_id: update_status)
 		    send_issue_notifications
 		end
 	end

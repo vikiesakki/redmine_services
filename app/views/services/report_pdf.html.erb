@@ -111,6 +111,9 @@
   .section-header .note {
     font-weight: normal;
   }
+  .red {
+    color: var(--accent-red);
+  }
   .section-header .note.red {
     color: var(--accent-red);
   }
@@ -276,10 +279,11 @@
   <header>
     <!-- Replace src with your actual logo path -->
     <img src="https://www.dcsnetworks.sg/uploads/7/9/4/7/79473268/6711601.jpg" alt="DCS Networks Logo" class="logo" />
+    &nbsp;&nbsp;
     <div class="company-info">
       <strong>DCS Networks Pte Ltd</strong><br />
       52 Ubi Ave 3, #03-43 Frontier, Singapore 408867<br />
-      Main (65) 65001000&nbsp;&nbsp; Support: (65)65001212<br />
+      Main (65) 65001200&nbsp;&nbsp; Helpdesk: (65)65001212<br />
       Email: customer@helpdesk.dcsnpl.sg
     </div>
   </header>
@@ -318,28 +322,28 @@
     </div>
     <%= @issue.description %>
   </div>
+  <div class="section" id="section-solution">
+    <div class="section-header">
+      <span>Solution</span>
+      <span class="note">Need follow-up : <span class="red"><%= @issue.status.name %></span>
+      </span>
+    </div>
+    <div>
+      <p><%= @issue.custom_field_value(17) %></p>
+      <p><%= @issue.custom_field_value(9) %></p>
+    </div>
+  </div>
   <div class="acknowledgement">
+    <div class="acknowledgement-title">Acknowledgement :</div>
     <table class="ack-grid">
     <% 
-      i = 0
       custom_field_values.each do |value| 
     %>
     <% if @issue.check_in_time.present? && Setting.plugin_redmine_services['servant_fields'].include?(value.custom_field_id.to_s) %>
-    <% if i == 0 %>
-    <tr>
-      <p style="text-align: right;padding: 0;margin: 0;"><span><b>Need follow up: <font color="red">NO</font></b></span></p>
-      <td class="label"><%= value.custom_field.name %>:</td>
-      <td><b><%= value.value %></b></td>
-      <div class="acknowledgement-title">Acknowledgement :</div>
-    </tr>
-    <% else %>
     <tr>
       <td class="label"><%= value.custom_field.name %>:</td>
       <td><b><%= value.value %></b></td>
     </tr>
-    <% end %>
-    <% i = i +1 %>
-      </tr>
     <% end -%>
   <% end -%>
   </table>
