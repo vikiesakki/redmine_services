@@ -283,7 +283,7 @@
     <div class="company-info">
       <strong>DCS Networks Pte Ltd</strong><br />
       52 Ubi Ave 3, #03-43 Frontier, Singapore 408867<br />
-      Main (65) 65001200&nbsp;&nbsp; Helpdesk: (65)65001212<br />
+      Main (65) 65001200&nbsp;&nbsp; Helpdesk: (65) 65001212<br />
       Email: customer@helpdesk.dcsnpl.sg
     </div>
   </header>
@@ -338,6 +338,7 @@
     <table class="ack-grid">
     <% 
       custom_field_values.each do |value| 
+      next if [17,9].include?(value.custom_field_id)
     %>
     <% if @issue.check_in_time.present? && Setting.plugin_redmine_services['servant_fields'].include?(value.custom_field_id.to_s) %>
     <tr>
