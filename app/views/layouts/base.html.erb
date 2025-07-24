@@ -88,13 +88,13 @@
         <%= render_project_jump_box %>
     </div>
     <% end %>
-    <div style="float: left; width: 100%;">
-        <div style="float: left; width: 40%;">
+    <div style="float: left; width: 100%;margin-top: -15px;">
+        <div style="float: left; width: 30%;">
             <h1>
                 <%= page_header_title %>
             </h1>
         </div>
-        <div style="float: left;background: white;">
+        <div style="float: left;background: white;padding: 0 5px;margin-top: -30px;color: black;">
             <ul>
               <% if @project.present? %>
                 <% render_custom_field_values(@project) do |custom_field, formatted| %>
