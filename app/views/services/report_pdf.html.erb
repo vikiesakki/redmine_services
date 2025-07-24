@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Services Report</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root {
+    --page-width: 210mm;   /* A4 portrait */
+    --page-height: 297mm;  /* A4 portrait */
+    --page-margin: 15mm;
+    --font-body: "Times New Roman", Times, serif;
+    --font-label: Arial, Helvetica, sans-serif;
+    --border-color: #000;
+    --accent-red: #e60000;
+    --label-w: 45mm; /* width for left column labels */
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #f8f8f8;
+    color: #000;
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.25;
+  }
+
+  .page {
+    width: var(--page-width);
+    min-height: var(--page-height);
+    margin: 0 auto;
+    padding: var(--page-margin);
+    box-sizing: border-box;
+    background: #fff;
+    position: relative;
+  }
+
+  header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 8mm;
+  }
+
+  header img.logo {
+    max-width: 90px;
+    height: auto;
+  }
+
+  header .company-info {
+    font-family: var(--font-label);
+    font-size: 12px;
+    line-height: 1.2;
+  }
+  header .company-info strong {
+    font-size: 14px;
+  }
+
+  h1 {
+    margin: 0 0 10mm 0;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: left;
+  }
+
+  /* Service details grid */
+  .service-details {
+    width: 100%;
+    margin-bottom: 10mm;
+    border-collapse: collapse;
+    font-family: var(--font-label);
+    font-size: 14px;
+  }
+  .service-details td {
+    padding: 1mm 0;
+    vertical-align: top;
+  }
+  .service-details td.label {
+    width: var(--label-w);
+    white-space: nowrap;
+    padding-right: 3mm;
+  }
+  .service-details input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    font-family: var(--font-body);
+    font-size: 14px;
+    padding: 0 1mm;
+    background: transparent;
+  }
+  .service-details input:focus {
+    outline: none;
+    background: #ffffcc;
+  }
+
+  /* Boxed sections */
+  .section {
+    margin-bottom: 12mm;
+  }
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 2mm;
+    font-family: var(--font-label);
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .section-header .note {
+    font-weight: normal;
+  }
+  .section-header .note.red {
+    color: var(--accent-red);
+  }
+
+  .textarea-box {
+    width: 100%;
+    height: 45mm; /* adjust as needed */
+    border: 1px solid var(--border-color);
+    box-sizing: border-box;
+    padding: 2mm;
+    resize: vertical;
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.25;
+  }
+
+  /* Acknowledgement */
+  .acknowledgement {
+    margin-bottom: 14mm;
+    font-family: var(--font-label);
+    font-size: 14px;
+  }
+  .acknowledgement-title {
+    font-weight: bold;
+    margin-bottom: 2mm;
+  }
+  .ack-grid {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .ack-grid td {
+    padding: 1mm 0;
+    vertical-align: top;
+  }
+  .ack-grid td.label {
+    width: var(--label-w);
+    padding-right: 3mm;
+  }
+  .ack-grid input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    font-family: var(--font-body);
+    font-size: 14px;
+    padding: 0 1mm;
+    background: transparent;
+  }
+  .ack-grid input:focus {
+    outline: none;
+    background: #ffffcc;
+  }
+  .ack-grid .change-note {
+    font-size: 12px;
+    color: var(--accent-red);
+    white-space: nowrap;
+    padding-left: 4mm;
+  }
+
+  /* Signature & times */
+  .footer-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10mm;
+    align-items: start;
+  }
+  .signature-box-wrapper {
+    max-width: 70mm;
+  }
+  .signature-box-wrapper label {
+    display: block;
+    font-family: var(--font-label);
+    font-size: 14px;
+    margin-bottom: 2mm;
+  }
+  .signature-box {
+    width: 100%;
+    height: 25mm;
+    border: 1px solid var(--border-color);
+    box-sizing: border-box;
+  }
+  .time-fields {
+    font-family: var(--font-label);
+    font-size: 14px;
+  }
+  .time-fields table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .time-fields td {
+    padding: 1mm 0;
+    vertical-align: top;
+  }
+  .time-fields td.label {
+    width: 25mm;
+    white-space: nowrap;
+    padding-right: 3mm;
+  }
+  .time-fields input {
+    width: 100%;
+    max-width: 60mm;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    font-family: var(--font-body);
+    font-size: 14px;
+    padding: 0 1mm;
+    background: transparent;
+  }
+  .time-fields input:focus {
+    outline: none;
+    background: #ffffcc;
+  }
+
+  /* Print adjustments */
+  @media print {
+    body {
+      background: #fff;
+    }
+    .no-print {
+      display: none !important;
+    }
+    .page {
+      box-shadow: none;
+      margin: 0;
+      width: auto;
+      min-height: initial;
+      padding: var(--page-margin);
+    }
+    input, textarea {
+      border: none;
+      border-bottom: 1px solid #000;
+    }
+    .textarea-box {
+      border: 1px solid #000;
+    }
+  }
+
+  /* Utility */
+  .inline-field {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 4px;
+    font-weight: normal;
+  }
+  .inline-field input[type="checkbox"] {
+    width: auto;
+    margin: 0 2px 0 0;
+    position: relative;
+    top: 1px;
+  }
+  .inline-field label {
+    margin: 0;
+    font-weight: normal;
+    font-size: 13px;
+  }
+  .inline-field .red {
+    color: var(--accent-red);
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <!-- Replace src with your actual logo path -->
+    <img src="https://www.dcsnetworks.sg/uploads/7/9/4/7/79473268/6711601.jpg" alt="DCS Networks Logo" class="logo" />
+    <div class="company-info">
+      <strong>DCS Networks Pte Ltd</strong><br />
+      52 Ubi Ave 3, #03-43 Frontier, Singapore 408867<br />
+      Main (65) 65001000&nbsp;&nbsp; Support: (65)65001212<br />
+      Email: customer@helpdesk.dcsnpl.sg
+    </div>
+  </header>
+
+  <h1>Services Report</h1>
+
+  <!-- Service meta fields -->
+  <table class="service-details">
+    <tr>
+      <td class="label">Services Date : </td>
+      <td><b><%= Time.now.to_date %></b></td>
+    </tr>
+    <tr>
+      <td class="label">Our Ref Number :</td>
+      <td><b>#<%= @issue.id %></b></td>
+    </tr>
+    <% custom_field_values = @issue.editable_custom_field_values %>
+    <% if custom_field_values.present? %>
+    <% i = 0 %>
+    <% custom_field_values.each do |value| %>
+    <% if Setting.plugin_redmine_services['company_fields'].include?(value.custom_field_id.to_s) %>
+      <tr>
+        <td class="label"><%= value.custom_field.name %>:</td> 
+        <td><b><%= value.value %></b></td>
+      </div>
+    <% end %>
+    <% end %>
+  <% end %>
+  </table>
+
+  <!-- Description -->
+  <div class="section" id="section-description">
+    <div class="section-header">
+      <span>Description issue/problem</span>
+      <span class="note">Chargeable : <span class="red">NO</span></span>
+    </div>
+    <%= @issue.description %>
+  </div>
+  <div class="acknowledgement">
+    <table class="ack-grid">
+    <% 
+      i = 0
+      custom_field_values.each do |value| 
+    %>
+    <% if @issue.check_in_time.present? && Setting.plugin_redmine_services['servant_fields'].include?(value.custom_field_id.to_s) %>
+    <% if i == 0 %>
+    <tr>
+      <p style="text-align: right;padding: 0;margin: 0;"><span><b>Need follow up: <font color="red">NO</font></b></span></p>
+      <td class="label"><%= value.custom_field.name %>:</td>
+      <td><b><%= value.value %></b></td>
+      <div class="acknowledgement-title">Acknowledgement :</div>
+    </tr>
+    <% else %>
+    <tr>
+      <td class="label"><%= value.custom_field.name %>:</td>
+      <td><b><%= value.value %></b></td>
+    </tr>
+    <% end %>
+    <% i = i +1 %>
+      </tr>
+    <% end -%>
+  <% end -%>
+  </table>
+</div>
+
+<div class="footer-row">
+  <div class="signature-box-wrapper">
+    <label for="signature">signature</label>
+    <div class="signature-box" id="signature">
+      <% attachment = @issue.attachments.detect{|a| a.filename.downcase.include?('signature') } %>
+      <%= image_tag url_for(controller: 'services', action: 'download', id: attachment.id, filename: attachment.filename, host: 'https://project.oneplan.cloud'), alt: "Signature", style: "width:230px;" %>
+    </div>
+  </div>
+  <div class="time-fields">
+    <table>
+      <tr>
+        <td class="label">Check-in Time:</td>
+        <td><b><%= @issue.checkin_time %></b></td>
+      </tr>
+      <tr>
+        <td class="label">Check-Out Time:</td>
+        <td><b><%= @issue.checkout_time %></b></td>
+      </tr>
+      <tr>
+        <td class="label">Services by:</td>
+        <td><b><%= @issue.assigned_to.try(:name) %></b></td>
+      </tr>
+    </table>
+  </div>
+</div>
+</div>
+</body>
+</html>

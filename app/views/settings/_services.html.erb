@@ -1,0 +1,27 @@
+<fieldset>
+  <legend>Configurations</legend>
+  <p>
+    <label for="trackers">Trackers</label>
+    <%= select_tag("settings[trackers][]", options_from_collection_for_select(Tracker.all, "id", "name",Setting.plugin_redmine_services['trackers']), multiple: true, style: "height:150px;") %>
+  </p>
+  <p>
+    <label for="company_fields">Company CustomFields</label>
+    <%= select_tag("settings[company_fields][]", options_from_collection_for_select(CustomField.all, "id", "name",Setting.plugin_redmine_services['company_fields']), multiple: true, style: "height:150px;") %>
+  </p>
+  <p>
+    <label for="notify_fields">Notify CustomFields</label>
+    <%= select_tag("settings[notify_fields][]", options_from_collection_for_select(CustomField.all, "id", "name",Setting.plugin_redmine_services['notify_fields']), multiple: true, style: "height:150px;") %>
+  </p>
+  <p>
+    <label for="notify_groups">Notify Groups</label>
+    <%= select_tag("settings[notify_groups][]", options_from_collection_for_select(Group.all, "id", "name",Setting.plugin_redmine_services['notify_groups']), multiple: true, style: "height:150px;") %>
+  </p>
+  <p>
+    <label for="notify_persons">Notify persons</label>
+    <%= text_area_tag "settings[notify_persons]", Setting.plugin_redmine_services['notify_persons'].to_s %>
+  </p>
+  <p>
+    <label for="servant_fields">Serant CustomFields</label>
+    <%= select_tag("settings[servant_fields][]", options_from_collection_for_select(CustomField.all, "id", "name",Setting.plugin_redmine_services['servant_fields']), multiple: true, style: "height:150px;") %>
+  </p>
+</fieldset>

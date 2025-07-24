@@ -1,0 +1,6 @@
+# English strings go here for Rails i18n
+en:
+  label_checkin_time: "Check-in-Time"
+  label_checkout_time: "Check-out-Time"
+  field_checkin_time: "Check-in-Time"
+  field_checkout_time: "Check-out-Time"

@@ -1,0 +1,21 @@
+<% if Setting.plugin_redmine_services['trackers'].to_a.include?(@issue.tracker_id.to_s) %>
+
+<div class="splitcontent">
+  <div class="splitcontentleft">
+    <div class="string_cf attribute">
+      <div class="label"><span><b>Check-In-Time</b></span>: <%= @issue.check_in_time.present? ? Time.parse(@issue.check_in_time).in_time_zone(User.current.time_zone).strftime("%Y-%m-%d %H:%M:%S") : "" %></div>
+    </div>
+    <div class="text_cf attribute">
+      <div class="label"><span><b>Check-Out-Time</b></span>: <%= @issue.check_out_time.present? ? Time.parse(@issue.check_out_time).in_time_zone(User.current.time_zone).strftime("%Y-%m-%d %H:%M:%S") : "" %></div>
+    </div>
+  </div>
+</div>
+<a onclick="navigator.clipboard.writeText('<%= service_form_url(issue_id: @issue.encrypt_id_for_url) %>')
+  .then(() => {
+    alert('Link to copied!');
+  })
+  .catch(err => {
+    console.error('Copy failed', err);
+    alert('Failed to copy text');
+  });" href="#">Copy Link</a>
+<% end %>

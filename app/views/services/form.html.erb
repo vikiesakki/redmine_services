@@ -1,0 +1,111 @@
+<div class="registration-form">
+<%= form_tag service_form_submit_path(@issue) do |f| %>
+    <div class="form-icon" style="background: none;">
+        <img src="https://www.dcsnetworks.sg/uploads/7/9/4/7/79473268/6711601.jpg" />
+    </div>
+    <div class="form-group">
+        <p>
+            <label>Service Date:</label> <span><b><%= Time.now.to_date %></b></span>
+        </p>
+    </div>
+    <div class="form-group">
+        <p>
+            <label>Our Ref Number:</label> <span><b>#<%= @issue.id %></b></span>
+        </p>
+    </div>
+    <% custom_field_values = @issue.editable_custom_field_values %>
+    <% custom_field_values_full_width = custom_field_values.select { |value| value.custom_field.full_width_layout? } %>
+    <% custom_field_values -= custom_field_values_full_width %>
+    <% if custom_field_values.present? %>
+      <% i = 0 %>
+      <% split_on = (custom_field_values.size / 2.0).ceil - 1 %>
+      <% custom_field_values.each do |value| %>
+      <% if Setting.plugin_redmine_services['company_fields'].include?(value.custom_field_id.to_s) %>
+        <div class="form-group">
+            <p>
+                <label><%= value.custom_field.name %>:</label> <span><b><%= value.value %></b></span>
+            </p>
+        </div>
+      <% end %>
+      <% end %>
+    <div class="form-group">
+        <p style="text-align: right;padding: 0;margin: 0;"><span><b>Chargeable: <font color="red">NO</font></b></span></p>
+        <p style="border: 2px solid;padding: 10px;">
+            <label>Description issue/problem:</label> 
+            <span><b><%= @issue.description %></b></span>
+        </p>
+    </div>
+      <% 
+        i = 0
+        custom_field_values.each do |value| 
+      %>
+      <% if @issue.check_in_time.present? && Setting.plugin_redmine_services['servant_fields'].include?(value.custom_field_id.to_s) %>
+        <div class="form-group">
+            <% if i == 0 %>
+                <p style="text-align: right;padding: 0;margin: 0;"><span><b>Need follow up: <font color="red">NO</font></b></span></p>
+            <% end %>
+            <%= custom_field_tag_with_label :issue, value, {:required => true, class: 'form-control item'} %>
+            <% if i == 0 %>
+                <p><b>Acknowledgment: </b></p>
+            <% end %>
+            <% i = i +1 %>
+        </div>
+      <% end -%>
+    <% end -%>
+    <% end %>
+    <% if @issue.check_in_time.present? %>
+    <div class="form-group" id="new-attachments" style="display:inline-block;">
+        <label><b>Attachments</b></label>
+        <p><%= render :partial => 'attachments/settings_form', :locals => {:container => @issue } %></p>
+    </div>
+    <div class="form-group">
+      <label class="block font-medium">Signature:</label>
+
+      <canvas id="signature-canvas" class="border rounded" width="400" height="200"></canvas>
+
+      <%= button_tag 'Clear', type: 'button', id: 'clear-canvas', class: 'mt-2 text-sm text-blue-600 hover:underline' %>
+
+      <!-- Hidden field to store the base64 signature -->
+      <%= hidden_field_tag :signature_data %>
+    </div>
+    <div class="form-group">
+        <p>Check-in Time: <%= @issue.checkin_time %></p>
+        <p>Services By: <%= @issue.assigned_to.try(:name) %></p>
+        <input type="submit" class="btn btn-block create-account" value="Submit">
+    </div>
+    <% else %>
+        <a href="<%= service_form_checkin_path(issue_id: params[:issue_id]) %>" class="btn btn-block create-account" onclick="return confirm('Are you sure want to check-in')">Check-in</a>
+    <% end %>
+    <% end %>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('input, textarea, select').forEach(function (el) {
+      if (!(el.tagName === 'INPUT' && el.type === 'file')) {
+            el.required = true;
+        }
+    });
+    const canvas = document.getElementById('signature-canvas');
+    const form = canvas.closest('form');
+
+    // Helper to check if canvas is empty
+    function isCanvasBlank(canvas) {
+      const context = canvas.getContext('2d');
+      const blank = document.createElement('canvas');
+      blank.width = canvas.width;
+      blank.height = canvas.height;
+      return canvas.toDataURL() === blank.toDataURL();
+    }
+
+    form.addEventListener('submit', function (e) {
+      if (isCanvasBlank(canvas)) {
+        e.preventDefault();
+        alert('Please provide your signature before submitting.');
+      }else{
+        form.submit();
+      }
+  });
+
+  });
+</script>
