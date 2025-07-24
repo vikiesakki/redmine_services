@@ -10,8 +10,8 @@
     selectElement = `
     <select name="issue[custom_field_values][4]" id="issue_custom_field_values_4" class="text_cf cf_4">
       <option value="">Select an option</option>
-      <option value="<%= @issue.project.custom_field_value(13) %>"><%= @issue.project.custom_field_value(13) %></option>
-      <option value="<%= @issue.project.custom_field_value(16) %>"><%= @issue.project.custom_field_value(16) %></option>
+      <option <%= @issue.custom_field_value(4).to_s == @issue.project.custom_field_value(13).to_s ? 'selected' : '' %> value="<%= @issue.project.custom_field_value(13) %>"><%= @issue.project.custom_field_value(13) %></option>
+      <option <%= @issue.custom_field_value(4).to_s == @issue.project.custom_field_value(16).to_s ? 'selected' : '' %> value="<%= @issue.project.custom_field_value(16) %>"><%= @issue.project.custom_field_value(16) %></option>
     </select>
   `;
 
