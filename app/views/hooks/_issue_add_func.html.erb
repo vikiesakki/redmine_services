@@ -6,5 +6,16 @@
     $("#issue_custom_field_values_5").on('change', function() {
       $("#issue_custom_field_values_11").val($(this).val());
     });
+
+    selectElement = `
+    <select name="issue[custom_field_values][4]" id="issue_custom_field_values_4" class="text_cf cf_4">
+      <option value="">Select an option</option>
+      <option value="<%= @issue.project.custom_field_value(13) %>"><%= @issue.project.custom_field_value(13) %></option>
+      <option value="<%= @issue.project.custom_field_value(16) %>"><%= @issue.project.custom_field_value(16) %></option>
+    </select>
+  `;
+
+  $("#issue_custom_field_values_4").replaceWith(selectElement);
+
   });
 </script>
