@@ -101,7 +101,7 @@ class ServicesController < ApplicationController
       container: @issue,
       file: StringIO.new(pdf_file),
       filename: "service_report_#{@issue.id}.pdf",
-      author: ,
+      author: User.current,
       content_type: 'application/pdf'
     )
   end
