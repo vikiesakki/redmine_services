@@ -88,18 +88,21 @@
         <%= render_project_jump_box %>
     </div>
     <% end %>
-    <h1>
-        <%= page_header_title %>
-    </h1>
-
-    <div>
-    <ul>
-      <% if @project.present? %>
-        <% render_custom_field_values(@project) do |custom_field, formatted| %>
-            <li class="<%= custom_field.css_classes %>"><span class="label"><%= custom_field.name %>:</span> <%= formatted %></li>
-        <% end %>
-      <% end %>
-    </ul>
+    <div style="float: left; width: 100%;">
+        <div style="float: left; width: 40%;">
+            <h1>
+                <%= page_header_title %>
+            </h1>
+        </div>
+        <div style="float: left;background: white;">
+            <ul>
+              <% if @project.present? %>
+                <% render_custom_field_values(@project) do |custom_field, formatted| %>
+                    <li class="<%= custom_field.css_classes %>"><span class="label"><%= custom_field.name %>:</span> <%= formatted %></li>
+                <% end %>
+              <% end %>
+            </ul>
+        </div>
     </div>
 
     <% if display_main_menu?(@project) %>
