@@ -88,6 +88,7 @@
         <%= render_project_jump_box %>
     </div>
     <% end %>
+    <% begin %>
     <div style="float: left; width: 100%;margin-top: -15px;">
         <div style="float: left; width: 30%;">
             <h1>
@@ -104,6 +105,11 @@
             </ul>
         </div>
     </div>
+    <% rescue %>
+    <h1>
+        <%= page_header_title %>
+    </h1>
+    <% end %>
 
     <% if display_main_menu?(@project) %>
     <div id="main-menu" class="tabs">
