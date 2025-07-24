@@ -318,14 +318,14 @@
   <div class="section" id="section-description">
     <div class="section-header">
       <span>Description issue/problem</span>
-      <span class="note">Chargeable : <span class="red">NO</span></span>
+      <span class="note">Chargeable : <span class="red"><b><%= @issue.custom_field_value(8) %></b></span></span>
     </div>
     <%= @issue.description %>
   </div>
   <div class="section" id="section-solution">
     <div class="section-header">
       <span>Solution</span>
-      <span class="note">Need follow-up : <span class="red"><%= @issue.status.name %></span>
+      <span class="note">Need follow-up : <span class="red"><b><%= @issue.status.name %></b></span>
       </span>
     </div>
     <div>

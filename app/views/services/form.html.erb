@@ -29,7 +29,7 @@
       <% end %>
       <% end %>
     <div class="form-group">
-        <p style="text-align: right;padding: 0;margin: 0;"><span><b>Chargeable: <font color="red">NO</font></b></span></p>
+        <p style="text-align: right;padding: 0;margin: 0;"><span><b>Chargeable: <font color="red"><%= @issue.custom_field_value(8) %></font></b></span></p>
         <p style="border: 2px solid;padding: 10px;">
             <label>Description issue/problem:</label> 
             <span><b><%= @issue.description %></b></span>

@@ -67,6 +67,7 @@ class ServicesController < ApplicationController
 			attach_signature_to_issue(@issue, base64_data) if base64_data.present?
 			save_issue_custom_field_values
 			save_issue_attachments
+			save_service_report
 			# attachments = params[:attachments] || params.dig(:issue, :uploads)
 				update_status = params[:issue][:status_id] || 5
 		    @issue.update(check_out_time: Time.now,status_id: update_status)
@@ -74,21 +75,36 @@ class ServicesController < ApplicationController
 		end
 	end
 
-        def download
-          @attachment = Attachment.find params[:id]
-          if @attachment.container.is_a?(Version) || @attachment.container.is_a?(Project)
-            @attachment.increment_download
-          end
+  def download
+    @attachment = Attachment.find params[:id]
+    if @attachment.container.is_a?(Version) || @attachment.container.is_a?(Project)
+      @attachment.increment_download
+    end
 
-          if stale?(:etag => @attachment.digest, :template => false)
-            # images are sent inline
-            send_file @attachment.diskfile, :filename => filename_for_content_disposition(@attachment.filename),
-                                      :type => detect_content_type(@attachment),
-                                      :disposition => disposition(@attachment)
-          end
-        end
+    if stale?(:etag => @attachment.digest, :template => false)
+      # images are sent inline
+      send_file @attachment.diskfile, :filename => filename_for_content_disposition(@attachment.filename),
+                                :type => detect_content_type(@attachment),
+                                :disposition => disposition(@attachment)
+    end
+  end
 
 	private
+	def save_service_report
+	pdf_html = ApplicationController.render(
+      template: 'services/report_pdf',
+      layout: 'pdf', # optional: use layouts/pdf.html.erb
+      assigns: { issue: @issue }
+    )
+    pdf_file = WickedPdf.new.pdf_from_string(pdf_html)
+    attachment = Attachment.create!(
+      container: @issue,
+      file: StringIO.new(pdf_file),
+      filename: "service_report_#{@issue.id}.pdf",
+      author: ,
+      content_type: 'application/pdf'
+    )
+  end
 
 	def raw_request_body
 	    if request.body.respond_to?(:size)

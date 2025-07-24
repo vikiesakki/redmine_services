@@ -29,14 +29,7 @@ class ServiceMailer < ActionMailer::Base
       assigns: { issue: @issue }
     )
     pdf_file = WickedPdf.new.pdf_from_string(pdf_html)
-    attachment = Attachment.create!(
-      container: issue,
-      file: StringIO.new(pdf_file),
-      filename: "service_report_#{issue.id}.pdf",
-      author: User.current,
-      content_type: 'application/pdf'
-    )
-    attachments["report.pdf"] = {
+    attachments["service_report_#{issue.id}.pdf"] = {
       mime_type: 'application/pdf',
       content: pdf_file
     }

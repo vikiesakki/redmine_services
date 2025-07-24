@@ -1,12 +1,12 @@
 <script>
   $(document).ready(function(){
-    $("#issue_custom_field_values_3").on('change', function() {
+    $("#issue_custom_field_values_6").on('change', function() {
       $("#issue_custom_field_values_10").val($(this).val());
     });
     $("#issue_custom_field_values_5").on('change', function() {
       $("#issue_custom_field_values_11").val($(this).val());
     });
-
+    $("#issue_custom_field_values_3").val('<%= @issue.project.name %>');
     selectElement = `
     <select name="issue[custom_field_values][4]" id="issue_custom_field_values_4" class="text_cf cf_4">
       <option value="">Select an option</option>
