@@ -88,7 +88,7 @@
         <%= render_project_jump_box %>
     </div>
     <% end %>
-    <% begin %>
+    <% if @project.present? %>
     <div id="header_style_project" style="float: left; width: 100%;margin-top: -15px;">
         <div style="float: left; width: 30%;">
             <h1>
@@ -97,15 +97,13 @@
         </div>
         <div style="float: left;background: white;padding: 0 5px;margin-top: -30px;color: black;">
             <ul>
-              <% if @project.present? %>
-                <% render_custom_field_values(@project) do |custom_field, formatted| %>
-                    <li class="<%= custom_field.css_classes %>"><span class="label"><%= custom_field.name %>:</span> <%= formatted %></li>
+                <% @project.custom_field_values.each do |cv| %>
+                    <li class="<%= cv.custom_field.css_classes %>"><span class="label"><%= cv.custom_field.name %>:</span> <%= cv.value %></li>
                 <% end %>
-              <% end %>
             </ul>
         </div>
     </div>
-    <% rescue %>
+    <% else %>
     <h1>
         <%= page_header_title %>
     </h1>
