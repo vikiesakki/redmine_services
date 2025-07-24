@@ -320,7 +320,9 @@
       <span>Description issue/problem</span>
       <span class="note">Chargeable : <span class="red"><b><%= @issue.custom_field_value(8) %></b></span></span>
     </div>
-    <%= @issue.description %>
+    <div style="border: 2px solid;padding: 10px;">
+      <%= @issue.description %>
+    </div>
   </div>
   <div class="section" id="section-solution">
     <div class="section-header">
@@ -328,7 +330,7 @@
       <span class="note">Need follow-up : <span class="red"><b><%= @issue.status.name %></b></span>
       </span>
     </div>
-    <div>
+    <div style="border: 2px solid;padding: 10px;">
       <p><%= @issue.custom_field_value(17) %></p>
       <p><%= @issue.custom_field_value(9) %></p>
     </div>
