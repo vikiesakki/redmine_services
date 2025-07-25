@@ -69,7 +69,7 @@ class ServicesController < ApplicationController
 			save_issue_attachments
 			save_service_report
 			# attachments = params[:attachments] || params.dig(:issue, :uploads)
-				update_status = (params[:issue][:status_id].blank? || params[:issue][:status_id] == ) || 5
+				update_status = (params[:issue][:status_id].blank? || params[:issue][:status_id] == 2) ? 5 : params[:issue][:status_id]
 		    @issue.update(check_out_time: Time.now,status_id: update_status)
 		    send_issue_notifications
 		end
