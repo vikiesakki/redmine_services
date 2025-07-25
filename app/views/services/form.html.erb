@@ -76,7 +76,7 @@
     <div class="form-group">
         <p>Check-in Time: <%= @issue.checkin_time %></p>
         <p>Services By: <%= @issue.assigned_to.try(:name) %></p>
-        <button type="submit" onclick="disableAndChangeText(this)" class="btn btn-block create-account">Submit</button>
+        <input type="submit" id="submit_button" class="btn btn-block create-account" value="Submit">
     </div>
     <% else %>
         <a href="<%= service_form_checkin_path(issue_id: params[:issue_id]) %>" class="btn btn-block create-account" onclick="return confirm('Are you sure want to check-in')">Check-in</a>
@@ -85,30 +85,6 @@
 </div>
 
 <script>
-    function isCanvasBlank(canvas) {
-      const context = canvas.getContext('2d');
-      const blank = document.createElement('canvas');
-      blank.width = canvas.width;
-      blank.height = canvas.height;
-      return canvas.toDataURL() === blank.toDataURL();
-    }
-    function disableAndChangeText(button) {
-        // button.disabled = true;
-        // button.textContent = "Processing...";
-        const canvas = document.getElementById('signature-canvas');
-        const form = canvas.closest('form');
-        if (isCanvasBlank(canvas)) {
-            e.preventDefault();
-            alert('Please provide your signature before submitting.');
-        }else{
-            button.disabled = true;
-            button.textContent = "Processing...";
-            form.submit();
-        }
-        // const canvas = document.getElementById('signature-canvas');
-        // const form = canvas.closest('form');
-        // form.submit();
-    }
     document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('input, textarea, select').forEach(function (el) {
       if (!(el.tagName === 'INPUT' && el.type === 'file')) {
@@ -119,15 +95,25 @@
     const form = canvas.closest('form');
 
     // Helper to check if canvas is empty
+    function isCanvasBlank(canvas) {
+      const context = canvas.getContext('2d');
+      const blank = document.createElement('canvas');
+      blank.width = canvas.width;
+      blank.height = canvas.height;
+      return canvas.toDataURL() === blank.toDataURL();
+    }
 
-  //   form.addEventListener('submit', function (e) {
-  //     if (isCanvasBlank(canvas)) {
-  //       e.preventDefault();
-  //       alert('Please provide your signature before submitting.');
-  //     }else{
-  //       form.submit();
-  //     }
-  // });
+    form.addEventListener('submit', function (e) {
+      if (isCanvasBlank(canvas)) {
+        e.preventDefault();
+        alert('Please provide your signature before submitting.');
+      }else{
+        var sbtn = document.getElementById('submit_button');
+        sbtn.value = "Processing...";
+        sbtn.disabled = true;
+        form.submit();
+      }
+  });
 
   });
 </script>
