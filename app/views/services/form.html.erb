@@ -85,6 +85,13 @@
 </div>
 
 <script>
+    function isCanvasBlank(canvas) {
+      const context = canvas.getContext('2d');
+      const blank = document.createElement('canvas');
+      blank.width = canvas.width;
+      blank.height = canvas.height;
+      return canvas.toDataURL() === blank.toDataURL();
+    }
     function disableAndChangeText(button) {
         // button.disabled = true;
         // button.textContent = "Processing...";
@@ -112,13 +119,6 @@
     const form = canvas.closest('form');
 
     // Helper to check if canvas is empty
-    function isCanvasBlank(canvas) {
-      const context = canvas.getContext('2d');
-      const blank = document.createElement('canvas');
-      blank.width = canvas.width;
-      blank.height = canvas.height;
-      return canvas.toDataURL() === blank.toDataURL();
-    }
 
   //   form.addEventListener('submit', function (e) {
   //     if (isCanvasBlank(canvas)) {
