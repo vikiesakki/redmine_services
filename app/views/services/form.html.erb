@@ -76,7 +76,7 @@
     <div class="form-group">
         <p>Check-in Time: <%= @issue.checkin_time %></p>
         <p>Services By: <%= @issue.assigned_to.try(:name) %></p>
-        <input type="submit" class="btn btn-block create-account" value="Submit">
+        <input type="submit" onclick="disableAndChangeText(this)" class="btn btn-block create-account" value="Submit">
     </div>
     <% else %>
         <a href="<%= service_form_checkin_path(issue_id: params[:issue_id]) %>" class="btn btn-block create-account" onclick="return confirm('Are you sure want to check-in')">Check-in</a>
@@ -85,6 +85,10 @@
 </div>
 
 <script>
+    function disableAndChangeText(button) {
+        button.disabled = true;
+        button.textContent = "Processing...";
+    }
     document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('input, textarea, select').forEach(function (el) {
       if (!(el.tagName === 'INPUT' && el.type === 'file')) {
