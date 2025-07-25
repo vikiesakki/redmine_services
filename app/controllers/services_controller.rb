@@ -69,7 +69,7 @@ class ServicesController < ApplicationController
 			save_issue_attachments
 			save_service_report
 			# attachments = params[:attachments] || params.dig(:issue, :uploads)
-				update_status = params[:issue][:status_id] || 5
+				update_status = (params[:issue][:status_id].blank? || params[:issue][:status_id] == ) || 5
 		    @issue.update(check_out_time: Time.now,status_id: update_status)
 		    send_issue_notifications
 		end
@@ -137,8 +137,10 @@ class ServicesController < ApplicationController
   		ServiceMailer.deliver_service_success_notification(notify_persons, @issue).deliver_now if notify_persons.present?
   		notify_emails = []
   		Setting.plugin_redmine_services['notify_fields'].to_a.each do |nu|
-  			if (@issue.custom_field_value(nu).to_s =~ URI::MailTo::EMAIL_REGEXP).present?
-  				notify_emails << @issue.custom_field_value(nu)
+  			@issue.custom_field_value(nu).to_s.split(',').compact.each do |e|
+  				if (e.to_s =~ URI::MailTo::EMAIL_REGEXP).present?
+  					notify_emails << e
+  				end
   			end
   		end
   		notify_emails = notify_emails.uniq
