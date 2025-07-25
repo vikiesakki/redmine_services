@@ -88,6 +88,9 @@
     function disableAndChangeText(button) {
         button.disabled = true;
         button.textContent = "Processing...";
+        const canvas = document.getElementById('signature-canvas');
+        const form = canvas.closest('form');
+        form.submit();
     }
     document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('input, textarea, select').forEach(function (el) {
