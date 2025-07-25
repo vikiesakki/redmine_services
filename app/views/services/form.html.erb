@@ -86,11 +86,21 @@
 
 <script>
     function disableAndChangeText(button) {
-        button.disabled = true;
-        button.textContent = "Processing...";
+        // button.disabled = true;
+        // button.textContent = "Processing...";
         const canvas = document.getElementById('signature-canvas');
         const form = canvas.closest('form');
-        form.submit();
+        if (isCanvasBlank(canvas)) {
+            e.preventDefault();
+            alert('Please provide your signature before submitting.');
+        }else{
+            button.disabled = true;
+            button.textContent = "Processing...";
+            form.submit();
+        }
+        // const canvas = document.getElementById('signature-canvas');
+        // const form = canvas.closest('form');
+        // form.submit();
     }
     document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('input, textarea, select').forEach(function (el) {
@@ -110,14 +120,14 @@
       return canvas.toDataURL() === blank.toDataURL();
     }
 
-    form.addEventListener('submit', function (e) {
-      if (isCanvasBlank(canvas)) {
-        e.preventDefault();
-        alert('Please provide your signature before submitting.');
-      }else{
-        form.submit();
-      }
-  });
+  //   form.addEventListener('submit', function (e) {
+  //     if (isCanvasBlank(canvas)) {
+  //       e.preventDefault();
+  //       alert('Please provide your signature before submitting.');
+  //     }else{
+  //       form.submit();
+  //     }
+  // });
 
   });
 </script>
