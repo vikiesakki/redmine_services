@@ -66,12 +66,12 @@ class ServicesController < ApplicationController
 			base64_data = params[:signature_data]
 			attach_signature_to_issue(@issue, base64_data) if base64_data.present?
 			save_issue_custom_field_values
+			update_status = (params[:issue][:status_id].blank? || params[:issue][:status_id].to_i == 2) ? 5 : params[:issue][:status_id]
+		  @issue.update(check_out_time: Time.now,status_id: update_status)
 			save_issue_attachments
 			save_service_report
 			# attachments = params[:attachments] || params.dig(:issue, :uploads)
-				update_status = (params[:issue][:status_id].blank? || params[:issue][:status_id].to_i == 2) ? 5 : params[:issue][:status_id]
-		    @issue.update(check_out_time: Time.now,status_id: update_status)
-		    send_issue_notifications
+		  send_issue_notifications
 		end
 	end
 
