@@ -2,7 +2,7 @@
 <p>We are writing to confirm that the service requested under Ref Number <b>#<%= @issue.id %></b> has been successfully completed.</p>
 <p>Please find the <b>attached Service Report</b> for your reference, which outlines the work carried out during our technician’s visit.</p>
 <p><b>Service Summary:</b></p>
-<p><b>Date of Visit:</b> <%= Time.now.to_date %></p>
+<p><b>Date of Visit:</b> <%= Time.now.in_time_zone("Singapore").strftime("%d-%m-%Y") %></p>
 <p><b>Location: </b> <%= @issue.custom_field_value(4) %> </p>
 <p><b>Technician: </b> <%= @issue.assigned_to.try(:name) %> </p>
 <p>If you require any clarification or further assistance, feel free to contact us by replying to this email or reaching out to

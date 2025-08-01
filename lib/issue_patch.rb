@@ -25,12 +25,12 @@ module IssuePatch
       Base64.urlsafe_encode64(encrypted)
     end
 
-    def checkin_time
-      check_in_time.present? ? Time.parse(check_in_time).in_time_zone(User.current.time_zone).strftime("%d-%m-%Y %H:%M:%S") : ''
+    def checkin_time(time_zone = User.current.time_zone)
+      check_in_time.present? ? Time.parse(check_in_time).in_time_zone(time_zone).strftime("%d-%m-%Y %H:%M:%S") : ''
     end
   
-    def checkout_time
-      check_out_time.present? ? Time.parse(check_out_time).in_time_zone(User.current.time_zone).strftime("%d-%m-%Y %H:%M:%S") : ''
+    def checkout_time(time_zone = User.current.time_zone)
+      check_out_time.present? ? Time.parse(check_out_time).in_time_zone(time_zone).strftime("%d-%m-%Y %H:%M:%S") : ''
     end
 
   end
