@@ -5,7 +5,7 @@
     </div>
     <div class="form-group">
         <p>
-            <label>Service Date:</label> <span><b><%= Time.now.to_date %></b></span>
+            <label>Service Date:</label> <span><b><%= Time.now.in_time_zone("Singapore").strftime("%d-%m-%Y") %></b></span>
         </p>
     </div>
     <div class="form-group">
@@ -74,7 +74,7 @@
       <%= hidden_field_tag :signature_data %>
     </div>
     <div class="form-group">
-        <p>Check-in Time: <%= @issue.checkin_time %></p>
+        <p>Check-in Time: <%= @issue.checkin_time.try(:in_time_zone, "Singapore") %></p>
         <p>Services By: <%= @issue.assigned_to.try(:name) %></p>
         <input type="submit" id="submit_button" class="btn btn-block create-account" value="Submit">
     </div>

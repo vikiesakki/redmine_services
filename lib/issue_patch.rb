@@ -26,11 +26,11 @@ module IssuePatch
     end
 
     def checkin_time
-      check_in_time.present? ? Time.parse(check_in_time).in_time_zone(User.current.time_zone).strftime("%Y-%m-%d %H:%M:%S") : ''
+      check_in_time.present? ? Time.parse(check_in_time).in_time_zone(User.current.time_zone).strftime("%d-%m-%Y %H:%M:%S") : ''
     end
   
     def checkout_time
-      check_out_time.present? ? Time.parse(check_out_time).in_time_zone(User.current.time_zone).strftime("%Y-%m-%d %H:%M:%S") : ''
+      check_out_time.present? ? Time.parse(check_out_time).in_time_zone(User.current.time_zone).strftime("%d-%m-%Y %H:%M:%S") : ''
     end
 
   end

@@ -294,7 +294,7 @@
   <table class="service-details">
     <tr>
       <td class="label">Services Date : </td>
-      <td><b><%= Time.now.to_date %></b></td>
+      <td><b><%= Time.now.in_time_zone("Singapore").strftime("%d-%m-%Y") %></b></td>
     </tr>
     <tr>
       <td class="label">Our Ref Number :</td>
@@ -364,11 +364,11 @@
     <table>
       <tr>
         <td class="label">Check-in Time:</td>
-        <td><b><%= @issue.checkin_time %></b></td>
+        <td><b><%= @issue.checkin_time.try(:in_time_zone, "Singapore") %></b></td>
       </tr>
       <tr>
         <td class="label">Check-Out Time:</td>
-        <td><b><%= @issue.checkout_time %></b></td>
+        <td><b><%= @issue.checkout_time.try(:in_time_zone, "Singapore") %></b></td>
       </tr>
       <tr>
         <td class="label">Services by:</td>
