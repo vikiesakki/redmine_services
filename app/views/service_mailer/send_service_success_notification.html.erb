@@ -11,6 +11,12 @@ our support team.</p>
 <br />
 <br />
 
+<hr />
+<div class="attachment" id="attachments_link">
+    <label><b>Attachments</b></label>
+    <p><%= render :partial => 'attachments/customer_links', :locals => {:attachments => @issue.attachments, container: @issue } %></p>
+</div>
+
 <p>Best Regard</p>
 <p>DCS Helpdesk Team</p>
 <p>DCS Networks Pte Ltd</p>
