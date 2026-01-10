@@ -102,7 +102,10 @@
         </div>
         <div style="float: left;background: white;padding: 0 5px;margin-top: -30px;color: black;">
             <ul>
+                <% pcv = 1 %>
                 <% @project.custom_field_values.each do |cv| %>
+                <% break if pcv >= 6 %>
+                <% pcv = pcv+1 %>
                     <li class="<%= cv.custom_field.css_classes %>"><span class="label"><%= cv.custom_field.name %>:</span> <%= cv.value %></li>
                 <% end %>
             </ul>
