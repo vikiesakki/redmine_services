@@ -32,9 +32,16 @@
         <p style="text-align: right;padding: 0;margin: 0;"><span><b>Chargeable: <font color="red"><%= @issue.custom_field_value(8) %></font></b></span></p>
         <p style="border: 2px solid;padding: 10px;">
             <label>Description issue/problem:</label> 
-            <span><b><%= @issue.description %></b></span>
+            <span><b><%= textilizable(@issue, :description, :only_path => false) %></b></span>
         </p>
     </div>
+    <% if @issue.attachments.present? %>
+    <div class="form-group">
+        <div class="form-group" id="attachments_link">
+            <p><%= render :partial => 'attachments/customer_links', :locals => {:attachments => @issue.attachments, container: @issue } %></p>
+        </div>
+    </div>
+    <% end %>
       <% 
         i = 0
         custom_field_values.each do |value| 
@@ -74,7 +81,7 @@
       <%= hidden_field_tag :signature_data %>
     </div>
     <div class="form-group">
-        <p>Check-in Time: <%= @issue.checkin_time.try(:in_time_zone, "Singapore") %></p>
+        <p>Check-in Time: <%= @issue.checkin_time("Singapore") %></p>
         <p>Services By: <%= @issue.assigned_to.try(:name) %></p>
         <input type="submit" id="submit_button" class="btn btn-block create-account" value="Submit">
     </div>
