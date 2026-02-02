@@ -92,35 +92,83 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('input, textarea, select').forEach(function (el) {
-      if (!(el.tagName === 'INPUT' && el.type === 'file')) {
-            el.required = true;
-        }
-    });
-    const canvas = document.getElementById('signature-canvas');
-    const form = canvas.closest('form');
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.querySelector('form');
+  if (!form) return;
 
-    // Helper to check if canvas is empty
-    function isCanvasBlank(canvas) {
-      const context = canvas.getContext('2d');
-      const blank = document.createElement('canvas');
-      blank.width = canvas.width;
-      blank.height = canvas.height;
-      return canvas.toDataURL() === blank.toDataURL();
+  const cf17 = document.getElementById('issue_custom_field_values_17'); // select
+  const cf9  = document.getElementById('issue_custom_field_values_9');  // textarea
+
+  // 1) Make ALL fields required (except file inputs)
+  document.querySelectorAll('input, textarea, select').forEach(function (el) {
+    if (el.tagName === 'INPUT' && el.type === 'file') return;
+    el.required = true;
+  });
+
+  // 2) But for these two: remove required (because we want OR rule)
+  if (cf17) cf17.required = false;
+  if (cf9)  cf9.required  = false;
+
+  // Helper: check value
+  function hasValue(el) {
+    if (!el) return false;
+    return String(el.value || '').trim().length > 0;
+  }
+
+  // 3) OR validation: at least one of cf17/cf9 must be filled
+  function validateEither() {
+    const ok = hasValue(cf17) || hasValue(cf9);
+
+    const msg = ok ? '' : 'Please fill Standard Answer OR Solution Update.';
+
+    // Set validity on both so the browser can show message near either field
+    if (cf17) cf17.setCustomValidity(msg);
+    if (cf9)  cf9.setCustomValidity(msg);
+
+    return ok;
+  }
+
+  // Live validation so message clears immediately
+  if (cf17) cf17.addEventListener('change', validateEither);
+  if (cf9)  cf9.addEventListener('input', validateEither);
+
+  // 4) Signature validation (your existing logic)
+  const canvas = document.getElementById('signature-canvas');
+
+  function isCanvasBlank(canvas) {
+    const blank = document.createElement('canvas');
+    blank.width = canvas.width;
+    blank.height = canvas.height;
+    return canvas.toDataURL() === blank.toDataURL();
+  }
+
+  // Initial validate (so if both empty, the custom message is ready)
+  validateEither();
+
+  form.addEventListener('submit', function (e) {
+    // run OR validation
+    validateEither();
+
+    // If any required field fails (including our custom validity), block submit
+    if (!form.checkValidity()) {
+      e.preventDefault();
+      form.reportValidity();
+      return;
     }
 
-    form.addEventListener('submit', function (e) {
-      if (isCanvasBlank(canvas)) {
-        e.preventDefault();
-        alert('Please provide your signature before submitting.');
-      }else{
-        var sbtn = document.getElementById('submit_button');
-        sbtn.value = "Processing...";
-        sbtn.disabled = true;
-        form.submit();
-      }
-  });
+    // Signature check
+    if (canvas && isCanvasBlank(canvas)) {
+      e.preventDefault();
+      alert('Please provide your signature before submitting.');
+      return;
+    }
 
+    // Disable button + processing text (don’t call form.submit() again)
+    const sbtn = document.getElementById('submit_button');
+    if (sbtn) {
+      sbtn.value = 'Processing...';
+      sbtn.disabled = true;
+    }
   });
+});
 </script>
